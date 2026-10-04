@@ -35,7 +35,7 @@ set PYTHONIOENCODING=utf-8
 
 ## Run
 
-**1. Build the corpus (A1).** Downloads FLORES-200 once into `data/`, checks its SHA-256, and writes the four language files.
+**1. Rebuild the corpus (A1). Optional.** The four corpus files are already in the repo, so steps 2 to 4 work without this. Run it only to rebuild them from the official source: it downloads FLORES-200 once into `data/`, checks its SHA-256, and writes the four language files.
 
 ```
 python Flam-submission/partA/A1_eval_corpus/prepare_corpus.py
@@ -62,8 +62,9 @@ python Flam-submission/partA/A2_script_audit/fertility_fixed.py --corpus x=my_te
 
 ## Things to know
 
-- **Internet is needed on the first run.** `prepare_corpus.py` downloads FLORES-200 (about 25 MB). The `gpt2` and Sarvam-1 tokenizer files are downloaded the first time each is used, then cached. No account or login is required.
-- **`data/` is not in the repo.** It is created by step 1.
+- **The dataset is in the repo.** `Flam-submission/partA/A1_eval_corpus/corpus/` holds the four language files (1,012 sentences each), so nothing has to be downloaded to run the analysis.
+- **Internet is needed on the first run for the tokenizers.** The `gpt2` and Sarvam-1 tokenizer files are downloaded the first time each is used, then cached. No account or login is required. `prepare_corpus.py` also downloads FLORES-200 (about 25 MB) if you run it.
+- **`data/` is not in the repo.** It is the full FLORES-200 download, created only if you run step 1.
 - **No GPU is used anywhere.**
 - **To see one bug from A2 on its own,** change that one line in `fertility_fixed.py` back to the old line shown in the comment above it, and rerun step 2. `Flam-submission/partA/A2_script_audit/results.txt` lists each edit and its output.
 - **The domain counts in A1** (Wikinews 341, Wikibooks 351, Wikivoyage 320) come from FLORES's own metadata file, `data/flores200_dataset/metadata_devtest.tsv`, in its `domain` column.
