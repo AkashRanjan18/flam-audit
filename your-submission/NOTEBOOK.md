@@ -138,3 +138,10 @@ Chronological. Each entry is hypothesis → experiment → result → what chang
 
 - **Arithmetic first:** reviewer 800 judgments a week; LoRA epoch 12 minutes; rewriter delays first token to about 8 s.
 - **Realization:** with no API, the fine-tuning data can only come from a prompted model, so option (a) cannot start before option (c) works. That ordering decided the recommendation.
+
+## 20. Dead end: line endings
+
+- **Observation:** after the first commit, the committed `kan.txt` and the file on disk had different SHA-256 hashes.
+- **Cause:** Python's text mode on Windows wrote CRLF line endings, and git stored LF. A first check with `grep` reported no carriage returns, because that `grep` strips them in text mode; counting the raw bytes in Python showed them.
+- **Fix:** `prepare_corpus.py` now writes with `newline="\n"`, and `.gitattributes` sets `eol=lf`.
+- **Effect on results:** none. The scripts read lines without their endings; the A3 and E1–E6 logs are identical before and after.
