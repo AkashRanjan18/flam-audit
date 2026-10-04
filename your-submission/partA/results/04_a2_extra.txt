@@ -1,0 +1,60 @@
+E1  ARE THE TOY SAMPLES PARALLEL?
+   1  Bengaluru International Airport handled record traffic in March.
+      मुझे सुबह की चाय बहुत पसंद है।
+   2  The Quarterly Review meeting moved to Thursday.
+      बेंगलुरु में आज हल्की बारिश हो रही है।
+   3  I bought this book yesterday from a small shop near MG Road.
+      यह किताब मैंने कल ही खरीदी थी।
+   4  Children are playing cricket on the ground.
+      हम अगले हफ़्ते मैसूर जा रहे हैं।
+   5  The train arrived exactly on time.
+      क्या तुमने खाना खा लिया?
+   6  NASA and ISRO announced a joint mission update.
+      ट्रेन ठीक समय पर पहुँची।
+   7  Please keep the books  in the cupboard.
+      बच्चे मैदान में क्रिकेट खेल रहे हैं।
+   8  We are visiting Mysuru next week.
+      मुझे थोड़ा पानी चाहिए।
+   9  Do you want tea or coffee?
+      आज दफ़्तर में बहुत काम था।
+  10  The GPU cluster ran out of memory during the night job.
+      किताबें  अलमारी में रखी हैं।
+  correlation of line lengths (UTF-8 bytes), eng vs hin:
+    toy sample (10 lines)            r = +0.285
+    FLORES devtest (1012 lines)      r = +0.922
+    10 random PARALLEL FLORES lines  r in [+0.712, +0.986] (95% of 5000 draws), share below sample's r: 0.0002
+
+E2  HOW STABLE IS A 10-SENTENCE ESTIMATE?  (intern's metric, gpt2)
+  all 1012 FLORES sentences: hin/eng fertility ratio = 6.109
+  5000 random 10-sentence subsets: min 5.03, 2.5% 5.48, median 6.12, 97.5% 6.75, max 7.36
+  -> a 10-sentence sample lands anywhere in a band 1.27 wide (21% of the value)
+  toy sample: point estimate 5.89, bootstrap 95% CI [5.36, 6.44]
+
+E3  DID THE REPORT MEASURE THE TOKENIZER WE SERVE?
+  bench/model_spec.md : | vocab | 128k |
+  tiktoken gpt2       : n_vocab = 50257
+  -> the report's tokenizer has a different vocabulary size from the served model
+
+E4  add_special_tokens=False  (looks like it drops something; is it right?)
+  xlm-roberta-base           without: eng  30661 hin  38222 premium 1.2466 | with: eng  32685 hin  40246 premium 1.2313 | +2 tokens per sentence
+  google/muril-base-cased    without: eng  27581 hin  31981 premium 1.1595 | with: eng  29605 hin  34005 premium 1.1486 | +2 tokens per sentence
+  sarvamai/sarvam-1          without: eng  31422 hin  35954 premium 1.1442 | with: eng  32434 hin  36966 premium 1.1397 | +1 tokens per sentence
+  tiktoken gpt2 adds no special tokens: 7 tokens, ids start [464, 4512, 5284] (no BOS id 50256)
+
+E5  DOES THE PREMIUM DEPEND ON DOMAIN?  (FLORES devtest, tokens(lang)/tokens(eng))
+  tokenizer     domain  sentences  hin premium  kan premium
+       gpt2   wikinews        341        7.401       13.686
+       gpt2  wikibooks        351        7.498       13.658
+       gpt2 wikivoyage        320        7.330       13.408
+   sarvam-1   wikinews        341        1.118        1.245
+   sarvam-1  wikibooks        351        1.172        1.203
+   sarvam-1 wikivoyage        320        1.143        1.204
+
+E6  ROMANISED HINDI  (illustrative only: 10 hand-romanised toy sentences)
+  tokenizer                   Devanagari   romanised  roman/deva
+  gpt2                               459         143        0.31
+  o200k_base                         100         119        1.19
+  xlm-roberta-base                    88         102        1.16
+  google/muril-base-cased             76          84        1.11
+  sarvamai/sarvam-1                   84         166        1.98
+

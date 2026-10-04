@@ -1,0 +1,40 @@
+### --kv-bytes 1
+  KV bytes per token = 2 (K and V) x 28 layers x 8 KV heads x 128 head_dim x 1 bytes = 57,344 bytes (56.0 KiB)
+  usable GPU memory  = 24 GB x 0.92 = 22.08 GB
+  weights            = 4.2 B params x 2 bytes = 8.40 GB
+  KV budget          = 22.08 - 8.40 - 1.6 = 12.08 GB
+  KV capacity        = 12.08 GB / 57,344 B = 210,658 tokens (13,166 blocks of 16)
+  one 4096-token sequence = 234.9 MB
+  max concurrent 4096-token sequences = 51.43 -> 51
+### --gpu-util 0.95
+  KV bytes per token = 2 (K and V) x 28 layers x 8 KV heads x 128 head_dim x 2 bytes = 114,688 bytes (112.0 KiB)
+  usable GPU memory  = 24 GB x 0.95 = 22.80 GB
+  weights            = 4.2 B params x 2 bytes = 8.40 GB
+  KV budget          = 22.80 - 8.40 - 1.6 = 12.80 GB
+  KV capacity        = 12.80 GB / 114,688 B = 111,607 tokens (6,975 blocks of 16)
+  one 4096-token sequence = 469.8 MB
+  max concurrent 4096-token sequences = 27.25 -> 27
+### --max-model-len 8192
+  KV bytes per token = 2 (K and V) x 28 layers x 8 KV heads x 128 head_dim x 2 bytes = 114,688 bytes (112.0 KiB)
+  usable GPU memory  = 24 GB x 0.92 = 22.08 GB
+  weights            = 4.2 B params x 2 bytes = 8.40 GB
+  KV budget          = 22.08 - 8.40 - 1.6 = 12.08 GB
+  KV capacity        = 12.08 GB / 114,688 B = 105,329 tokens (6,583 blocks of 16)
+  one 8192-token sequence = 939.5 MB
+  max concurrent 8192-token sequences = 12.86 -> 12
+### --kv-heads 24
+  KV bytes per token = 2 (K and V) x 28 layers x 24 KV heads x 128 head_dim x 2 bytes = 344,064 bytes (336.0 KiB)
+  usable GPU memory  = 24 GB x 0.92 = 22.08 GB
+  weights            = 4.2 B params x 2 bytes = 8.40 GB
+  KV budget          = 22.08 - 8.40 - 1.6 = 12.08 GB
+  KV capacity        = 12.08 GB / 344,064 B = 35,110 tokens (2,194 blocks of 16)
+  one 4096-token sequence = 1409.3 MB
+  max concurrent 4096-token sequences = 8.57 -> 8
+### --weight-bytes 0.5
+  KV bytes per token = 2 (K and V) x 28 layers x 8 KV heads x 128 head_dim x 2 bytes = 114,688 bytes (112.0 KiB)
+  usable GPU memory  = 24 GB x 0.92 = 22.08 GB
+  weights            = 4.2 B params x 0.5 bytes = 2.10 GB
+  KV budget          = 22.08 - 2.10 - 1.6 = 18.38 GB
+  KV capacity        = 18.38 GB / 114,688 B = 160,261 tokens (10,016 blocks of 16)
+  one 4096-token sequence = 469.8 MB
+  max concurrent 4096-token sequences = 39.13 -> 39

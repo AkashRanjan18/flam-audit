@@ -1,0 +1,52 @@
+tokenizer: gpt2   (row 0 verified identical to fertility.analyze)
+eng = your-submission/partA/corpus/devtest/eng.txt
+kan = your-submission/partA/corpus/devtest/kan.txt
+
+FERTILITY (tokens per word)
+variant                                              eng     kan  kan/eng    d eng    d kan  d ratio
+0 intern baseline (all switches as shipped)       1.2874 22.5698  17.5318  +0.0000  +0.0000  +0.0000
+1 split() instead of split(' ')                   1.2874 23.0193  17.8809  +0.0000  +0.4495  +0.3491
+2 ratio of sums instead of mean of ratios         1.2782 22.2970  17.4440  -0.0092  -0.2728  -0.0878
+3 no lowercasing                                  1.2444 22.5686  18.1357  -0.0429  -0.0012  +0.6039
+4 no NFC normalisation                            1.2874 22.5723  17.5337  +0.0000  +0.0025  +0.0019
+5 graphemes instead of code points (tok/char)     1.2874 22.5698  17.5318  +0.0000  +0.0000  +0.0000
+6 fixes 1+2+3 together                            1.2348 22.8178  18.4785  -0.0525  +0.2479  +0.9467
+
+TOKENS PER CHARACTER
+variant                                              eng     kan  kan/eng    d eng    d kan  d ratio
+0 intern baseline (all switches as shipped)       0.2141  2.6599  12.4262  +0.0000  +0.0000  +0.0000
+1 split() instead of split(' ')                   0.2141  2.6599  12.4262  +0.0000  +0.0000  +0.0000
+2 ratio of sums instead of mean of ratios         0.2121  2.6617  12.5476  -0.0019  +0.0018  +0.1214
+3 no lowercasing                                  0.2070  2.6597  12.8488  -0.0071  -0.0002  +0.4226
+4 no NFC normalisation                            0.2141  2.6599  12.4264  +0.0000  +0.0000  +0.0002
+5 graphemes instead of code points (tok/char)     0.2141  4.0656  18.9933  +0.0000  +1.4057  +6.5671
+6 fixes 1+2+3 together                            0.2049  2.6616  12.9875  -0.0091  +0.0017  +0.5613
+
+DETAIL 1: lines where split(' ') and split() disagree
+
+DETAIL 3: lines whose token count changes when lowercased
+  eng: 469 of 1012 lines change
+  kan: 29 of 1012 lines change
+
+DETAIL 4: is NFC a no-op on these files?
+  eng: 0 of 1012 lines differ after NFC
+  kan: 7 of 1012 lines differ after NFC
+
+DETAIL 5: code points vs grapheme clusters (totals)
+  eng: 21901 words, 131966 code points, 131966 graphemes, 132096 UTF-8 bytes | code points/word=6.03, graphemes/word=6.03, bytes/word=6.03
+  kan: 16100 words, 138027 code points, 90371 graphemes, 375341 UTF-8 bytes | code points/word=8.57, graphemes/word=5.61, bytes/word=23.31
+
+DETAIL 5b: 'how many times worse than English' under each denominator
+  (raw text, no lowercasing, ratio of sums)
+  eng: 27044 tokens in 1012 lines
+  kan: 367366 tokens in 1012 lines
+  per word         eng    1.235   kan   22.818   kan/eng =  18.48x
+  per code point   eng    0.205   kan    2.662   kan/eng =  12.99x
+  per grapheme     eng    0.205   kan    4.065   kan/eng =  19.84x
+  per UTF-8 byte   eng    0.205   kan    0.979   kan/eng =   4.78x
+  per line         eng   26.723   kan  363.010   kan/eng =  13.58x
+
+DETAIL 6: is `random` used anywhere after it is seeded?
+  fertility.py:21: import random
+  fertility.py:25: random.seed(1337)  # reproducibility
+  -> 2 lines mention `random`; none draw a random number
