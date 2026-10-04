@@ -18,7 +18,7 @@ An audit of `REPORT_v0.md`: the tokenizer numbers (Part A), the serving capacity
 ## Layout
 
 ```
-starter_kit/                  the kit as received, untouched
+starter_kit/                  the kit as received (only the macOS .DS_Store file removed)
 data/                         FLORES-200 download (created by prepare_corpus.py, not committed)
 your-submission/
   requirements.txt            pinned versions (Python 3.9.9)
