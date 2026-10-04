@@ -81,7 +81,9 @@ def main():
         if lines and lines[-1] == "":
             lines.pop()  # the file ends with a newline
         corpus[code] = lines
-        (out / f"{code}.txt").write_text("\n".join(lines) + "\n", encoding="utf-8")
+        # newline="\n" gives identical bytes on every OS (Windows would write CRLF)
+        with open(out / f"{code}.txt", "w", encoding="utf-8", newline="\n") as f:
+            f.write("\n".join(lines) + "\n")
 
     # --- alignment checks: a parallel corpus must have the same shape -------
     n = {len(v) for v in corpus.values()}
