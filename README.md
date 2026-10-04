@@ -1,21 +1,21 @@
 # The Audit — submission
 
-An audit of `REPORT_v0.md`: the tokenizer numbers (Part A), the serving capacity numbers (Part B) and a decision memo (Part C).
+An audit of `starter_kit/REPORT_v0.md`: the tokenizer numbers (Part A), the serving capacity numbers (Part B) and a decision memo (Part C).
 
 ## What is where
 
-| Part | Folder                         | Read this                    |
-|------|--------------------------------|------------------------------|
-| A1   | `partA/A1_eval_corpus`         | `eval_corpus.md`             |
-| A2   | `partA/A2_script_audit`        | `fertility_audit.md`         |
-| A3   | `partA/A3_corrected_analysis`  | `corrected_analysis.md`      |
-| A4   | `partA/A4_memo`                | `recommendation_memo.md`     |
-| B1   | `partB/B1_kv_cache`            | `kv_cache.md`                |
-| B2   | `partB/B2_throughput_anomaly`  | `throughput_anomaly.md`      |
-| B3   | `partB/B3_goodput`             | `goodput.md`                 |
-| B4   | `partB/B4_counter`             | `counter.md`                 |
-| C    | `partC`                        | `memo.md`                    |
-|      |                                | `NOTEBOOK.md`, `AI_USAGE.md` |
+| Part | Folder                                        | Read this                    |
+|------|-----------------------------------------------|------------------------------|
+| A1   | `Flam-submission/partA/A1_eval_corpus`        | `eval_corpus.md`             |
+| A2   | `Flam-submission/partA/A2_script_audit`       | `fertility_audit.md`         |
+| A3   | `Flam-submission/partA/A3_corrected_analysis` | `corrected_analysis.md`      |
+| A4   | `Flam-submission/partA/A4_memo`               | `recommendation_memo.md`     |
+| B1   | `Flam-submission/partB/B1_kv_cache`           | `kv_cache.md`                |
+| B2   | `Flam-submission/partB/B2_throughput_anomaly` | `throughput_anomaly.md`      |
+| B3   | `Flam-submission/partB/B3_goodput`            | `goodput.md`                 |
+| B4   | `Flam-submission/partB/B4_counter`            | `counter.md`                 |
+| C    | `Flam-submission/partC`                       | `memo.md`                    |
+|      | `Flam-submission`                             | `NOTEBOOK.md`, `AI_USAGE.md` |
 
 Each `results.txt` is the saved output behind the numbers in the write-up next to it. Parts B and C have no code: B is arithmetic shown in the write-ups, and C is a memo.
 
@@ -65,6 +65,6 @@ python Flam-submission/partA/A2_script_audit/fertility_fixed.py --corpus x=my_te
 - **Internet is needed on the first run.** `prepare_corpus.py` downloads FLORES-200 (about 25 MB). The `gpt2` and Sarvam-1 tokenizer files are downloaded the first time each is used, then cached. No account or login is required.
 - **`data/` is not in the repo.** It is created by step 1.
 - **No GPU is used anywhere.**
-- **To see one bug from A2 on its own,** change that one line in `fertility_fixed.py` back to the old line shown in the comment above it, and rerun step 2. `A2_script_audit/results.txt` lists each edit and its output.
+- **To see one bug from A2 on its own,** change that one line in `fertility_fixed.py` back to the old line shown in the comment above it, and rerun step 2. `Flam-submission/partA/A2_script_audit/results.txt` lists each edit and its output.
 - **The domain counts in A1** (Wikinews 341, Wikibooks 351, Wikivoyage 320) come from FLORES's own metadata file, `data/flores200_dataset/metadata_devtest.tsv`, in its `domain` column.
-- **`partB/B1_kv_cache/results.txt`** is the B1 arithmetic applied to all 13 rows of `bench_log.csv`. Any row can be checked by hand: batch × (prompt_len + gen_len) ÷ 105,329.
+- **`Flam-submission/partB/B1_kv_cache/results.txt`** is the B1 arithmetic applied to all 13 rows of `bench_log.csv`. Any row can be checked by hand: batch × (prompt_len + gen_len) ÷ 105,329.
