@@ -5,7 +5,7 @@ I used Claude (Claude Code), and Grok for a second opinion.
 ## Where it helped
 
 - **Part A:** I asked Claude to find the bugs in `fertility.py`, and to write `prepare_corpus.py`, the script that builds the corpus.
-- **Part B:** I did the calculations myself. I took Claude's help for the theory behind them: the KV cache, GQA, preemption and goodput.
+- **Part B:** B1, the calculation and the theory behind it, I did myself. I took Claude's help for B2, B3 and B4.
 - **Part C:** I read Claude's reasoning and Grok's reasoning, and then made my own conclusion.
 - **Throughout:** Claude wrote the code and the text the way I asked for it. What to include, what to cut and what to conclude were my decisions.
 
