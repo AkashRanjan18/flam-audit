@@ -1,0 +1,5 @@
+lang   sentences   words  utf8_bytes  words/sentence
+eng         1012   21901      132096            21.6
+hin         1012   25643      337094            25.3
+tam         1012   16775      421641            16.6
+tel         1012   16938      353711            16.7

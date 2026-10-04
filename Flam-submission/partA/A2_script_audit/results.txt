@@ -1,0 +1,117 @@
+==============================================================================
+A2 EVIDENCE: fertility.py (the intern's) against fertility_fixed.py (corrected)
+==============================================================================
+
+Number tracked: the report's headline, Hindi fertility / English fertility
+(fertility = tokens per word; tokenizer gpt2; the intern's two sample files).
+
+                        fertility.py  fertility_fixed.py
+English fertility             1.2652              1.2308
+Hindi fertility               7.4485              7.5246
+Hindi / English               5.8871              6.1137
+
+How one bug is measured alone: take fertility_fixed.py, put that one old line
+back, run the same command. 'With the bug' below is that run.
+
+==============================================================================
+BUG 1: lowercasing changes English but not Hindi
+==============================================================================
+fertility.py        : line = line.lower()
+fertility_fixed.py  : (line removed; text is tokenized as written)
+What the bug did    : "NASA and ISRO announced a joint mission update." -> 11 tokens lowercased, 10 as written; Hindi has no capitals
+What the fix does   : both languages are measured exactly as written
+Effect on the report: Hindi / English  5.9285 with the bug  ->  6.1137 fixed  (the bug lowered it by 0.1852)
+                      English fertility 1.2692 -> 1.2308 (bug inflated it 3.1%); Hindi 7.5246 both times
+
+==============================================================================
+BUG 2: a double space is counted as a word
+==============================================================================
+fertility.py        : words = line.split(" ")
+fertility_fixed.py  : words = line.split()
+What the bug did    : "Please keep the books  in the cupboard." -> 8 words, one of them empty
+What the fix does   : same line -> 7 words
+Effect on the report: Hindi / English  6.0922 with the bug  ->  6.1137 fixed  (the bug lowered it by 0.0215)
+                      Hindi fertility 7.4032 -> 7.5246; too many words made it look lower
+
+==============================================================================
+BUG 3: per-line ratios are averaged
+==============================================================================
+fertility.py        : return sum(per_line_fertility) / n
+fertility_fixed.py  : return total_tokens / total_words
+What the bug did    : a 4-word line counted as much as a 12-word line
+What the fix does   : every word counts once
+Effect on the report: Hindi / English  6.0925 with the bug  ->  6.1137 fixed  (the bug lowered it by 0.0212)
+                      English fertility 1.2472 -> 1.2308; Hindi 7.5985 -> 7.5246
+
+==============================================================================
+ALL THREE BUGS TOGETHER
+==============================================================================
+Hindi / English  5.8871 (fertility.py)  ->  6.1137 (fertility_fixed.py)  = +0.2266, or 3.8%
+The bugs are real but small.
+
+==============================================================================
+CONCEPTUAL PROBLEM: tokens per word is the wrong unit across languages
+==============================================================================
+fertility.py        : reports tokens per word
+fertility_fixed.py  : also reports tokens per sentence
+What is wrong       : a word is not the same amount of meaning in every language
+Measured on         : the A1 corpus, 1,012 parallel sentences, gpt2
+
+    lang    x English per word  x English per sentence     per word is
+    hin                   6.34                    7.42        15% too low
+    tam                  20.28                   15.54        31% too high
+    tel                  16.77                   12.97        29% too high
+
+Same text, same tokenizer, same run; only what is divided by differs.
+
+==============================================================================
+LOOKS SUSPICIOUS, IS FINE
+==============================================================================
+1. NFC normalisation:  line = unicodedata.normalize("NFC", line)
+   Why suspicious : it rewrites the text before measuring it
+   Measured       : with it 6.1137, without it 6.1137; no number changes
+   In the fix     : kept
+
+2. random.seed(1337)
+   Why suspicious : it suggests the numbers depend on random sampling
+   Measured       : random appears only at line 21: import random and line 25: random.seed(1337)  # reproducibility; nothing draws a random number
+   In the fix     : removed, since it does nothing
+
+==============================================================================
+RAW OUTPUT OF THE TWO SCRIPTS
+==============================================================================
+$ cd starter_kit
+$ python fertility.py --corpus eng=corpus_sample/eng_sample.txt --corpus hin=corpus_sample/hin_sample.txt --tokenizer gpt2
+    tokenizer: gpt2
+    lang      fertility (tok/word)    tok/char
+    ------------------------------------------
+    eng                       1.27       0.226
+    hin                       7.45       1.579
+    
+    hin is 5.89x the fertility of eng (worse tokenization)
+
+$ python Flam-submission/partA/A2_script_audit/fertility_fixed.py --corpus eng=starter_kit/corpus_sample/eng_sample.txt --corpus hin=starter_kit/corpus_sample/hin_sample.txt      (from the repo root)
+    tokenizer: gpt2
+    lang    tok/word  tok/grapheme  tok/byte  tok/sentence
+    ------------------------------------------------------
+    eng       1.2308        0.2143    0.2143          9.60
+    hin       7.5246        2.4415    0.6008         45.90
+    
+    times eng:
+    lang    per word  per grapheme  per byte  per sentence
+    hin       6.1137       11.3936    2.8037        4.7812
+
+$ python Flam-submission/partA/A2_script_audit/fertility_fixed.py --corpus eng=Flam-submission/partA/A1_eval_corpus/corpus/eng.txt --corpus hin=Flam-submission/partA/A1_eval_corpus/corpus/hin.txt --corpus tam=Flam-submission/partA/A1_eval_corpus/corpus/tam.txt --corpus tel=Flam-submission/partA/A1_eval_corpus/corpus/tel.txt
+    tokenizer: gpt2
+    lang    tok/word  tok/grapheme  tok/byte  tok/sentence
+    ------------------------------------------------------
+    eng       1.2348        0.2049    0.2047         26.72
+    hin       7.8262        2.3347    0.5947        198.31
+    tam      25.0475        4.2133    0.9965        415.19
+    tel      20.7078        4.5809    0.9918        346.59
+    
+    times eng:
+    lang    per word  per grapheme  per byte  per sentence
+    hin       6.3379       11.3928    2.9050        7.4208
+    tam      20.2841       20.5597    4.8675       15.5366
+    tel      16.7697       22.3535    4.8443       12.9695

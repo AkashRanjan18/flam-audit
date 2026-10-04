@@ -1,0 +1,69 @@
+==============================================================================
+A3 EVIDENCE: corrected comparison, two tokenizers, four denominators
+==============================================================================
+
+Script    : Flam-submission/partA/A2_script_audit/fertility_fixed.py
+Corpus    : Flam-submission/partA/A1_eval_corpus/corpus  (1,012 parallel sentences)
+Languages : English, Hindi, Tamil, Telugu
+Tokenizers: gpt2 (the report's) and Sarvam-1 (Indic-aware)
+
+SUMMARY: how many times English, for the same 1,012 sentences
+
+  gpt2        per word  per grapheme  per byte  per sentence
+  Hindi           6.34         11.39      2.91          7.42
+  Tamil          20.28         20.56      4.87         15.54
+  Telugu         16.77         22.35      4.84         12.97
+
+  Sarvam-1    per word  per grapheme  per byte  per sentence
+  Hindi           0.97          1.74      0.44          1.13
+  Tamil           1.51          1.53      0.36          1.16
+  Telugu          1.49          1.99      0.43          1.15
+
+Tokens per sentence (what is actually paid for)
+
+              gpt2   Sarvam-1
+  English    26.72      31.05
+  Hindi     198.31      35.13
+  Tamil     415.19      35.95
+  Telugu    346.59      35.78
+
+Both commands are run from the repo root.
+
+==============================================================================
+RUN: --tokenizer gpt2
+==============================================================================
+$ python Flam-submission/partA/A2_script_audit/fertility_fixed.py --corpus eng=Flam-submission/partA/A1_eval_corpus/corpus/eng.txt --corpus hin=Flam-submission/partA/A1_eval_corpus/corpus/hin.txt --corpus tam=Flam-submission/partA/A1_eval_corpus/corpus/tam.txt --corpus tel=Flam-submission/partA/A1_eval_corpus/corpus/tel.txt --tokenizer gpt2
+
+    tokenizer: gpt2
+    lang    tok/word  tok/grapheme  tok/byte  tok/sentence
+    ------------------------------------------------------
+    eng       1.2348        0.2049    0.2047         26.72
+    hin       7.8262        2.3347    0.5947        198.31
+    tam      25.0475        4.2133    0.9965        415.19
+    tel      20.7078        4.5809    0.9918        346.59
+    
+    times eng:
+    lang    per word  per grapheme  per byte  per sentence
+    hin       6.3379       11.3928    2.9050        7.4208
+    tam      20.2841       20.5597    4.8675       15.5366
+    tel      16.7697       22.3535    4.8443       12.9695
+
+==============================================================================
+RUN: --tokenizer hf:sarvamai/sarvam-1
+==============================================================================
+$ python Flam-submission/partA/A2_script_audit/fertility_fixed.py --corpus eng=Flam-submission/partA/A1_eval_corpus/corpus/eng.txt --corpus hin=Flam-submission/partA/A1_eval_corpus/corpus/hin.txt --corpus tam=Flam-submission/partA/A1_eval_corpus/corpus/tam.txt --corpus tel=Flam-submission/partA/A1_eval_corpus/corpus/tel.txt --tokenizer hf:sarvamai/sarvam-1
+
+    tokenizer: hf:sarvamai/sarvam-1
+    lang    tok/word  tok/grapheme  tok/byte  tok/sentence
+    ------------------------------------------------------
+    eng       1.4347        0.2381    0.2379         31.05
+    hin       1.3865        0.4136    0.1054         35.13
+    tam       2.1691        0.3649    0.0863         35.95
+    tel       2.1377        0.4729    0.1024         35.78
+    
+    times eng:
+    lang    per word  per grapheme  per byte  per sentence
+    hin       0.9664        1.7371    0.4429        1.1315
+    tam       1.5118        1.5324    0.3628        1.1580
+    tel       1.4900        1.9861    0.4304        1.1523
+

@@ -1,9 +1,0 @@
-lang,language,family,script,sentences,words,graphemes,code_points,utf8_bytes,words/sent,bytes/word,nfc_changed_lines,lines_with_double_space,lines_with_zwj_zwnj
-eng,English,Indo-European (Germanic),Latin,997,20954,125194,125194,125290,21.02,5.98,0,1,0
-hin,Hindi,Indo-Aryan,Devanagari,997,24607,82421,125383,322270,24.68,13.1,90,7,1
-mar,Marathi,Indo-Aryan,Devanagari,997,18065,76321,125918,335897,18.12,18.59,0,71,36
-ben,Bengali,Indo-Aryan,Bengali,997,18756,78123,123275,329572,18.81,17.57,586,50,7
-kan,Kannada,Dravidian,Kannada,997,15430,86374,131963,357656,15.48,23.18,10,306,313
-tam,Tamil,Dravidian,Tamil,997,16134,94467,146128,398801,16.18,24.72,2,83,0
-tel,Telugu,Dravidian,Telugu,997,16388,73593,127201,338841,16.44,20.68,3,113,166
-mal,Malayalam,Dravidian,Malayalam,997,14377,75624,142102,391357,14.42,27.22,8,75,221
